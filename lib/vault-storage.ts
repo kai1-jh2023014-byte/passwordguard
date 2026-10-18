@@ -5,6 +5,21 @@ import {
   VaultPayload,
 } from "@/lib/types";
 
+const vaultListeners = new Set<() => void>();
+
+export function subscribeVault(onChange: () => void): () => void {
+  vaultListeners.add(onChange);
+  return () => {
+    vaultListeners.delete(onChange);
+  };
+}
+
+function notifyVaultChange(): void {
+  for (const listener of vaultListeners) {
+    listener();
+  }
+}
+
 export function readStoredVault(): StoredVault | null {
   if (typeof window === "undefined") return null;
   const raw = localStorage.getItem(VAULT_STORAGE_KEY);
