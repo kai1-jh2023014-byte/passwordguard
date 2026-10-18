@@ -25,6 +25,7 @@ export function MasterPasswordForm({ mode, onSubmit, onReset }: Props) {
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldsLocked, setFieldsLocked] = useState(true);
 
   const isSetup = mode === "setup";
 
@@ -62,14 +63,20 @@ export function MasterPasswordForm({ mode, onSubmit, onReset }: Props) {
             : "マスターパスワードを入力して金庫を開きます。"}
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="master">マスターパスワード</Label>
+            <Label htmlFor="vault-master-password">マスターパスワード</Label>
             <Input
-              id="master"
+              id="vault-master-password"
+              name="vault-master-password"
               type="password"
-              autoComplete={isSetup ? "new-password" : "current-password"}
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-form-type="other"
+              readOnly={fieldsLocked}
+              onFocus={() => setFieldsLocked(false)}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="8文字以上"
@@ -78,11 +85,17 @@ export function MasterPasswordForm({ mode, onSubmit, onReset }: Props) {
           </div>
           {isSetup && (
             <div className="space-y-2">
-              <Label htmlFor="confirm">確認</Label>
+              <Label htmlFor="vault-master-confirm">確認</Label>
               <Input
-                id="confirm"
+                id="vault-master-confirm"
+                name="vault-master-confirm"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="off"
+                data-1p-ignore
+                data-lpignore="true"
+                data-form-type="other"
+                readOnly={fieldsLocked}
+                onFocus={() => setFieldsLocked(false)}
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 placeholder="もう一度入力"

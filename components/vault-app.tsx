@@ -58,14 +58,7 @@ function newEntry(partial?: Partial<PasswordEntry>): PasswordEntry {
   };
 }
 
-const subscribeNoop = () => () => {};
-
 export function VaultApp() {
-  const mounted = useSyncExternalStore(
-    subscribeNoop,
-    () => true,
-    () => false,
-  );
   const vaultExists = useSyncExternalStore(
     subscribeVault,
     () => hasVault(),
@@ -174,14 +167,6 @@ export function VaultApp() {
     await persist({ ...payload, entries });
     toast.success("削除しました");
   };
-
-  if (!mounted) {
-    return (
-      <div className="flex flex-1 items-center justify-center text-muted-foreground">
-        読み込み中…
-      </div>
-    );
-  }
 
   if (!masterPassword || !payload) {
     return (
