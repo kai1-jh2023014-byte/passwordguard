@@ -64,6 +64,19 @@ export function MasterPasswordForm({ mode, onSubmit, onReset }: Props) {
         </CardDescription>
       </CardHeader>
       <form autoComplete="off" onSubmit={handleSubmit}>
+        <div
+          aria-hidden
+          tabIndex={-1}
+          className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0"
+        >
+          <input type="text" name="username" autoComplete="username" readOnly />
+          <input
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            readOnly
+          />
+        </div>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="vault-master-password">マスターパスワード</Label>
